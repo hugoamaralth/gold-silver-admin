@@ -3,13 +3,12 @@ import { listarProdutos } from "../serverRequests";
 import {Link} from "react-router-dom";
 
 function Linha(props) {
-
     return (
-        <tr key={props._id}>
+        <tr key={props.id}>
             <td>{props.name}</td>
             <td>{props.price}</td>
             <td>{props.category}</td>
-            <td> <Link to={`/produtos/edit/${props._id}`} className="bg-primary" > <button className="btn bg-primary text-light btn-icon-spli">Editar <i className="fas fa-edit text-light"></i></button> </Link></td>
+            <td> <Link to={`/produtos/edit/${props.id}`} className="bg-primary" > <button className="btn bg-primary text-light btn-icon-spli">Editar <i className="fas fa-edit text-light"></i></button> </Link></td>
         </tr>
     )
 }
@@ -51,7 +50,7 @@ export default class ListaProdutos extends React.Component {
         let {dataProdutos} = this.state;
         let ret= [];
         dataProdutos.map(
-            (e,i)=> ret.push(<Linha name={e.name} price={e.price} _id={e._id} key={i} category={e.category}/>)
+            (e,i)=> ret.push(<Linha name={e.name} price={e.price} id={e.id} key={i} category={e.category}/>)
         )
         return (
             <tbody id="table-body">

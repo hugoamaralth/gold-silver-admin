@@ -25,7 +25,7 @@ export default class Edit extends React.Component {
         let detalhesResp = {};
         produtoPorId(this.id).then(
             resp => {
-                detalhesResp = resp
+                detalhesResp = resp[0];
                 this.setState({ produtoDetalhes: detalhesResp })
             }
         );
@@ -36,7 +36,7 @@ export default class Edit extends React.Component {
             name: this.state.produtoDetalhes.name,
             price: this.state.produtoDetalhes.price,
             category: this.state.produtoDetalhes.category,
-            marca: this.state.produtoDetalhes.marca,
+            brand: this.state.produtoDetalhes.brand,
             description: this.state.produtoDetalhes.description,
         }
         updateProduct(this.id, produtosConfig);
@@ -48,7 +48,7 @@ export default class Edit extends React.Component {
         ret.name = pars.key === "name" ? pars.value : produtoDetalhes.name;
         ret.price = pars.key === "price" ? pars.value : produtoDetalhes.price;
         ret.category = pars.key === "category" ? pars.value : produtoDetalhes.category;
-        ret.marca = pars.key === "marca" ? pars.value : produtoDetalhes.marca;
+        ret.brand = pars.key === "brand" ? pars.value : produtoDetalhes.brand;
         ret.description = pars.key === "description" ? pars.value : produtoDetalhes.description;
 
         this.setState({produtoDetalhes: {
@@ -89,7 +89,7 @@ export default class Edit extends React.Component {
                             <Input reff="name" valueInput={this.state.produtoDetalhes.name} onChange={this.handlerOnInputChange} name="Nome" icon="file-signature" typeInput="text" />
                             <Input reff="price" valueInput={this.state.produtoDetalhes.price} onChange={this.handlerOnInputChange} name="Preço" icon="dollar-sign" typeInput="number"/>
                             <Input reff="category" valueInput={this.state.produtoDetalhes.category} onChange={this.handlerOnInputChange} name="Categoria" icon="align-center" typeInput="text"/>
-                            <Input reff="marca" valueInput={this.state.produtoDetalhes.marca} onChange={this.handlerOnInputChange} name="Marca" icon="copyright" typeInput="text"/>
+                            <Input reff="brand" valueInput={this.state.produtoDetalhes.brand} onChange={this.handlerOnInputChange} name="brand" icon="copyright" typeInput="text"/>
                             <Input reff="description" valueInput={this.state.produtoDetalhes.description} onChange={this.handlerOnInputChange} name="Descrição" icon="exclamation"typeInput="text" />
                         </div>
                         <div className="form-group ml-2">
