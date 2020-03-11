@@ -25,7 +25,11 @@ export async function saveProduct(pars){
       for(let p in pars) {
         params.append(p,pars[p])
     }
-    
     const ret = await axios.post(`${SERVER_URL}/product/create.php`, params);
     console.log(ret);
+}
+
+export async function uploadImages(images){
+    const ret = await axios.post(`${SERVER_URL}/product/uploadPic.php`, images);
+    return ret.data;
 }

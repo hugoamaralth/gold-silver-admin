@@ -1,14 +1,17 @@
 import React from "react";
+import FileUploader from "./fileUploader";
 import Input from "./Input"
-import { saveProduct } from './serverRequests'
+import { saveProduct, uploadImages } from './serverRequests'
 export default class NovoProduto extends React.Component {
     state = {
-        produtoDetalhes: {}
+        produtoDetalhes: {},
+        formDataImages: null
     }
     
     constructor(props) {
         super(props);
         this.handlerOnInputChange = this.handlerOnInputChange.bind(this);
+        this.setImage = this.setImage.bind(this);
     }
 
 
@@ -22,13 +25,19 @@ export default class NovoProduto extends React.Component {
         ret.description = pars.key === "description" ? pars.value : produtoDetalhes.description;
 
         this.setState({
+            ...this.state,
             produtoDetalhes: {
                 ...this.state.produtoDetalhes,
                 ...ret
             }
         })
     }
+
     async salvarProduto() {
+        console.log(this.state.formDataImages)
+        const upImages = await uploadImages(this.state.formDataImages);
+        console.log(upImages);
+        return;
         const produtosConfig = {
             name: this.state.produtoDetalhes.name,
             price: this.state.produtoDetalhes.price,
@@ -41,10 +50,16 @@ export default class NovoProduto extends React.Component {
         console.log('PRODUTO SALVO')
     }
 
+    setImage(formData){
+        this.setState({
+            ...this.state,
+            formDataImages: formData
+        });
+    }
+
     render() {
         return (
-            <div className="container-fluid ">
-                <form action="" className="my-5">
+            <div className="container-fluid " style={{marginTop:'50px'}}>
                     <div className="form-group">
                         <Input reff="name" name="Nome" placeholder="Insira o nome do produto" icon="file-signature" onChange={this.handlerOnInputChange} valueInput={this.state.produtoDetalhes.name} typeInput="text"/>
                         <Input reff="price" name="Preço" placeholder="Insira o preço do produto" icon="dollar-sign" onChange={this.handlerOnInputChange} valueInput={this.state.produtoDetalhes.price} typeInput="number"/>
@@ -56,9 +71,9 @@ export default class NovoProduto extends React.Component {
                     <div className="form-group">
                         <div className="form-group ml-2">
                             <label htmlFor="image" className="text-primary">Adicionar novas imagens</label>
-                            <p className="text-muted"> EM BREVE!</p>
                             <div>
-                                <input type="file" className="file-path validate btn btn-primary" id="image" disabled/>
+                                {/* <input type="file" className="file-path validate btn btn-primary" id="image" /> */}
+                                <FileUploader setImage={this.setImage} />
                             </div>
                         </div>
                         <div className="form-group d-flex justify-content-between p-0">
@@ -81,7 +96,7 @@ export default class NovoProduto extends React.Component {
 
                         </div>
                     </div>
-                </form>
+
             </div>
         )
     }
