@@ -62,7 +62,7 @@ export default class NovoProduto extends React.Component {
                             </div>
                         </div>
                         <div className="form-group d-flex justify-content-between p-0">
-                            <div className="bg-warning p-2 btn" id="salvar">
+                            <div className="p-2 btn" id="salvar">
                                 <span className="btn  btn-warning h-100 w-100 btn-icon-split">
                                     <span className="icon text-white-50">
                                         <i className="fas fa-long-arrow-alt-left text-light"></i>
@@ -70,7 +70,7 @@ export default class NovoProduto extends React.Component {
                                     <span className="text text-light">Voltar</span>
                                 </span>
                             </div>
-                            <div className="bg-primary p-2 btn " id="salvar" onClick={()=> this.salvarProduto()}>
+                            <div className=" p-2 btn " id="salvar" onClick={()=> this.salvarProduto()}>
                                 <span className="btn btn-primary h-100 w-100 btn-icon-split">
                                     <span className="icon text-white-50">
                                         <i className="fas fa-check text-light"></i>

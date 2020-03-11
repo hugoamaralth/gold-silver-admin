@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../css/fontawesome-free/css/all.min.css"
+
 
 export default class Input extends Component {
     constructor(props) {

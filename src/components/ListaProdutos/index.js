@@ -8,7 +8,7 @@ function Linha(props) {
             <td>{props.name}</td>
             <td>{props.price}</td>
             <td>{props.category}</td>
-            <td> <Link to={`/produtos/edit/${props.id}`} className="bg-primary" > <button className="btn bg-primary text-light btn-icon-spli">Editar <i className="fas fa-edit text-light"></i></button> </Link></td>
+            <td> <Link to={`/admin/produtos/edit/${props.id}`} className="bg-primary" > <button className="btn bg-primary text-light btn-icon-spli">Editar <i className="fas fa-edit text-light"></i></button> </Link></td>
         </tr>
     )
 }
