@@ -1,8 +1,8 @@
 import axios from "axios";
 
 //o IP estava errado, arrumei e já coloquei o endereço do backend numa varaivel, vai facilitar de trocar em tudo depois
-//const SERVER_URL = "http://localhost/gold-silver-backend/api";
-const SERVER_URL = "http://eletricagoldsilver.com.br/api";
+const SERVER_URL = "http://localhost/gold-silver-backend/api";
+// const SERVER_URL = "http://eletricagoldsilver.com.br/api";
 
 //arrumei o metodo também, siga esse padrão para as demais chamadas;
 export async function listarProdutos(){

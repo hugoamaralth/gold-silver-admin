@@ -1,7 +1,7 @@
 import React from "react";
 // import { withRouter } from "react-router";
-import { produtoPorId, updateProduct } from "../serverRequests";
-import Input from "../Input";
+import { produtoPorId, updateProduct } from "./serverRequests";
+import Input from "./Input";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 export default class Edit extends React.Component {

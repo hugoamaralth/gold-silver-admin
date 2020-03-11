@@ -1,6 +1,6 @@
 import React from "react";
-import Input from "../Input"
-import { saveProduct } from '../serverRequests'
+import Input from "./Input"
+import { saveProduct } from './serverRequests'
 export default class NovoProduto extends React.Component {
     state = {
         produtoDetalhes: {}
@@ -38,7 +38,7 @@ export default class NovoProduto extends React.Component {
             image: 'images/products/no-image.png'
         }
         await saveProduct(produtosConfig);
-        console.log('foi')
+        console.log('PRODUTO SALVO')
     }
 
     render() {
