@@ -1,5 +1,5 @@
 import React from "react";
-import { listarProdutos } from "./serverRequests";
+import { listarProdutos } from "../services/serverRequests";
 import {Link} from "react-router-dom";
 
 function Linha(props) {

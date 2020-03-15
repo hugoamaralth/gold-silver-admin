@@ -17,12 +17,15 @@ export default class FileUploader extends Component {
     async uploadMultipleFiles(e) {
         const formData = new FormData();
         this.fileObj = e.target.files;
-        this.fileArray = [];
-        for (let i = 0; i < this.fileObj.length; i++) {
-            formData.append('files[]', this.fileObj[i]);
-            this.fileArray.push(URL.createObjectURL(this.fileObj[i]))
+        if(this.fileObj.length <= 3) {
+            this.fileArray = [];
+            for (let i = 0; i < this.fileObj.length; i++) {
+                formData.append('files[]', this.fileObj[i]);
+                this.fileArray.push(URL.createObjectURL(this.fileObj[i]))
+            }
+        } else {
+            this.props.verifyImageLength(true)
         }
-        
         await this.setState({ file: formData });
         
         this.props.setImage(this.state.file);
