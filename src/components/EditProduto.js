@@ -1,22 +1,26 @@
 import React from "react";
 // import { withRouter } from "react-router";
-import { produtoPorId, updateProduct } from "../services/serverRequests";
+import { produtoPorId, updateProduct, uploadImages } from "../services/serverRequests";
 import Input from "./Input";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import Images from "./Images";
 // import fileUploader from "./fileUploader";
 
 export default class Edit extends React.Component {
+
     url = "http://192.168.1.7:3000/";
     id = this.props.match.params.id;
+
     state = {
         produtoDetalhes: {
             name: ''
         },
         hasError: false,
         isImagesLoaded: false,
-        imageLimit: false
+        imageLimit: false,
     }
+
+    images = [];
 
     constructor(props) {
         super(props);
@@ -64,17 +68,26 @@ export default class Edit extends React.Component {
                 this.setState({
                     ...this.state,
                     produtoDetalhes: {
-                        ...this.state.produtoDetalhes,
-                        image: this.state.produtoDetalhes.image
+                        ...this.state.produtoDetalhes            
                     },
                     isImagesLoaded: true,
-
-                })
+                });
+                detalhesResp.image.map(img => {
+                    this.images.push({
+                        name: img,
+                        uploaded: true
+                    })
+                });
             }
         );
     };
 
-    salvarProduto() {
+
+    getImageByName(name){
+        return this.images.filter(img => img.name === name)[0];
+    }
+
+    async salvarProduto() {
         let containsError = undefined;
 
         const produtosConfig = {
@@ -92,9 +105,28 @@ export default class Edit extends React.Component {
         this.setState({ hasError: containsError });
 
         if (!this.state.hasError) {
-            produtosConfig.image = JSON.stringify(this.state.produtoDetalhes.image);
-            
-            updateProduct(this.id, produtosConfig);
+            let formData = new FormData();
+            let hasUploadsTodo = false;
+            let arrayImages = [];
+            this.state.produtoDetalhes.image.map(img => {
+                let name = img.includes("blob:") ? img.split("/")[img.split("/").length - 1] : img;
+                let image = this.getImageByName(name);
+                if(image.uploaded){
+                    arrayImages.push(img);
+                } else {
+                    hasUploadsTodo = true;
+                    formData.append("files[]", image.formData);
+                }
+            });
+            if(hasUploadsTodo){
+                const upImages = await uploadImages(formData);
+                arrayImages = [
+                    ...arrayImages,
+                    ...upImages
+                ];
+            }
+            produtosConfig.image = JSON.stringify(arrayImages);
+            await updateProduct(this.id, produtosConfig);
         }
     }
 
@@ -117,11 +149,12 @@ export default class Edit extends React.Component {
 
     async addImages(e) {
         let imagesSelected = e.target.files;
-        let imagesValues = Object.values(imagesSelected);
-        let sendImages = []
-        imagesValues.map(
-            e => sendImages.push(URL.createObjectURL(e))
-        )
+        let name = URL.createObjectURL(imagesSelected[0]);
+        this.images.push({
+            name: name.split("/")[name.split("/").length - 1],
+            uploaded: false,
+            formData: imagesSelected[0]
+        })       
         if (this.state.produtoDetalhes.image.length < 3) {
             await this.setState({
                 ...this.state,
@@ -129,7 +162,7 @@ export default class Edit extends React.Component {
                     ...this.state.produtoDetalhes,
                     image: [
                         ...this.state.produtoDetalhes.image,
-                        ...sendImages
+                        name
                     ]
                 }
             })

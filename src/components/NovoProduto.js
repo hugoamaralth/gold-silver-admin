@@ -47,7 +47,7 @@ export default class NovoProduto extends React.Component {
 
     async salvarProduto() {
         let containError = false;
-        console.log(this.state.formDataImages)
+        
         const upImages = await uploadImages(this.state.formDataImages);
         
         let produtosConfig = {
