@@ -1,6 +1,6 @@
 import React from "react";
 // import { withRouter } from "react-router";
-import { produtoPorId, updateProduct, uploadImages } from "../services/serverRequests";
+import { produtoPorId, updateProduct, uploadImages, deletarProduto } from "../services/serverRequests";
 import Input from "./Input";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import Images from "./Images";
@@ -18,6 +18,7 @@ export default class Edit extends React.Component {
         hasError: false,
         isImagesLoaded: false,
         imageLimit: false,
+        showDeleteMessage: false
     }
 
     images = [];
@@ -100,8 +101,10 @@ export default class Edit extends React.Component {
 
         let produtosAutenticar = Object.values(produtosConfig);
         produtosAutenticar.map(
-            (e, i) => e === "" ? containsError = true : ""
+            e  => e === "" ? containsError = true : ""
         );
+
+
         this.setState({ hasError: containsError });
 
         if (!this.state.hasError) {
@@ -120,13 +123,22 @@ export default class Edit extends React.Component {
             });
             if(hasUploadsTodo){
                 const upImages = await uploadImages(formData);
+                console.log(upImages)
                 arrayImages = [
                     ...arrayImages,
-                    ...upImages
+                    ...upImages.data
                 ];
             }
             produtosConfig.image = JSON.stringify(arrayImages);
-            await updateProduct(this.id, produtosConfig);
+            let ret = await updateProduct(this.id, produtosConfig);
+            if(ret.status === 200 && !this.state.hasError){
+                let alertSuccess = document.querySelector('.alertSuccess');
+                alertSuccess.innerHTML= "Produto salvo com sucesso."
+
+                setTimeout(function(){
+                    window.location = "/admin/produtos"
+                }, 1500)
+            }
         }
     }
 
@@ -174,11 +186,24 @@ export default class Edit extends React.Component {
         }
     }
 
+    async deleteProduct(id){
+        let ret = await deletarProduto(id);
+        
+        if(ret.status === 200){ 
+            this.setState({
+                showDeleteMessage: true
+            })
+            setTimeout(function(){
+                window.location = "/admin/produtos";
+            }, 1500)
+        }
+    }
+
 
     render() {
 
         let { hasError } = this.state;
-        const alertSucess = <div className="alert alert-success text-center">
+        const alertSucess = <div className="alert alert-success text-center alertSuccess">
             Sem erros, produto pronto para ser salvo.
         </div>;
 
@@ -188,6 +213,10 @@ export default class Edit extends React.Component {
 
         const alertWarning = <div className="alert alert-danger text-center">
             Somente 3 imagens são permitidas.
+        </div>
+
+        const alertDelete = <div className="aler alert-danger text-center">
+            Produto deletado com sucesso
         </div>
         return (
             <div className="container-fluid m-0 p-0 " >
@@ -210,14 +239,15 @@ export default class Edit extends React.Component {
                         <div className="form-group ml-2">
                             <label htmlFor="image" className="text-primary">Adicionar nova imagem</label>
                             <div>
-                                <input type="file" className="file-path validate btn btn-primary" id="image" onChange={this.addImages} />
+                                <input type="file" className="file-path validate btn btn-primary"  onChange={this.addImages} />
                             </div>
                         </div>
 
+                        {this.state.showDeleteMessage ? alertDelete : ""}
                         {hasError ? alertError : alertSucess}
                         <div className="form-group d-flex justify-content-between p-0">
                             <Link to="/admin/produtos/list" >
-                                <div className="p-2 btn" id="salvar">
+                                <div className="p-2 btn" >
                                     <span className="btn  btn-warning h-100 w-100 btn-icon-split">
                                         <span className="icon text-white-50">
                                             <i className="fas fa-long-arrow-alt-left text-light"></i>
@@ -226,7 +256,7 @@ export default class Edit extends React.Component {
                                     </span>
                                 </div>
                             </Link>
-                            <div className=" p-2 btn mx-2" id="salvar">
+                            <div className=" p-2 btn mx-2"  onClick={()=> this.deleteProduct(this.id)}>
                                 <span className="btn  btn-danger h-100 w-100 btn-icon-split">
                                     <span className="icon text-white-50">
                                         <i className="fas fa-trash text-light"></i>
@@ -234,7 +264,7 @@ export default class Edit extends React.Component {
                                     <span className="text text-light">Excluir</span>
                                 </span>
                             </div>
-                            <div className=" p-2 btn " id="salvar" onClick={() => this.salvarProduto(this.id)}>
+                            <div className=" p-2 btn "  onClick={() => this.salvarProduto(this.id)}>
                                 <span className="btn btn-primary h-100 w-100 btn-icon-split">
                                     <span className="icon text-white-50">
                                         <i className="fas fa-check text-light"></i>
