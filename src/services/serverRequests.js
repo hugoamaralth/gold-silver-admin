@@ -36,5 +36,35 @@ export async function saveProduct(pars){
 
 export async function uploadImages(images){
     const ret = await axios.post(`${SERVER_URL}/api/product/uploadPic.php`, images);
+    return ret;
+}
+
+export async function saveCliente(pars){ 
+    let params = new URLSearchParams();
+    for(let p in pars){
+        params.append(p,pars[p]);
+    }
+    let ret = await axios.post(`${SERVER_URL}/api/client/create.php`, params);
+    return ret;
+}
+
+export async function clientePorId(id){
+    const ret = await axios.get(`${SERVER_URL}/api/client/?id=${id}`);
+    console.log(id)
+    return ret.data
+}
+
+export async function listarClientes(){
+    const ret = await axios.get(`${SERVER_URL}/api/client/`);
     return ret.data;
+}
+
+export async function deletarProduto(id){
+    const ret  = await axios.get(`${SERVER_URL}/api/product/delete.php?id=${id}`);
+    return ret;
+}
+
+export async function deletarCliente(id){
+    const ret = await axios.get(`${SERVER_URL}/api/client/delete.php?id=${id}`);
+    return ret;
 }

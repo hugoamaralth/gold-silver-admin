@@ -11,53 +11,36 @@ export default props =>
       </Link>
 
       <hr className="sidebar-divider my-0" />
-
+{/* 
       <li className="nav-item active">
         <Link className="nav-link" to="/admin">
           <i className="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></Link>
-      </li>
+      </li> */}
 
       <hr className="sidebar-divider" />
 
-      <div className="sidebar-heading">
-        Produtos
-      </div>
 
       <li className="nav-item">
-        <Link className="nav-link collapsed" to="/admin/produtos/list" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <Link className="nav-link collapsed" to="/admin/produtos" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i className="fas fa-bars"></i>
-          <span>Lista de Produtos</span>
+          <span><b>Produtos</b></span>
         </Link>
       </li>
+      
 
       <li className="nav-item">
-        <Link className="nav-link collapsed" to="/admin/produtos/new" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i className="fas fa-fw fa-wrench"></i>
-          <span>Novo Produto</span>
-        </Link>
-      </li>
-
-      <hr className="sidebar-divider" />
-
-      <div className="sidebar-heading">
-        Clientes
-      </div>
-
-      <li className="nav-item">
-        <Link className="nav-link collapsed" to="/admin/clientes/list" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <Link className="nav-link collapsed" to="/admin/clientes" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i className="fas fa-bars"></i>
-          <span>Lista de Clientes</span>
+          <span>Clientes</span>
         </Link>
       </li>
-
       <li className="nav-item">
-        <Link className="nav-link collapsed" to="/admin/clientes/new" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i className="fas fa-fw fa-wrench"></i>
-          <span>Novo Cliente</span>
+        <Link className="nav-link collapsed" to="/admin/compras" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i className="fas fa-bars"></i>
+          <span>Compras</span>
         </Link>
       </li>
-
 
       <div className="text-center d-none d-md-inline">
         <button className="rounded-circle border-0" id="sidebarToggle"></button>

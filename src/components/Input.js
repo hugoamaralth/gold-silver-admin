@@ -6,7 +6,9 @@ export default class Input extends Component {
         super(props);
         this.state = {
             valueInput: this.props.valueInput || '',
-            name: this.props.name
+            name: this.props.name,
+            readOnly : this.props.readOnly
+
         }
     }
 
@@ -44,7 +46,7 @@ export default class Input extends Component {
                     <div className="input-group-prepend">
                         <div className="input-group-text"> <i className={`fas fa-${this.props.icon} text-primary`}></i></div>
                     </div>
-                    <input type={this.props.typeInput} placeholder={this.props.placeholder} id={this.props.id} className={"form-control "} onChange={e => this.changeValue(e)} value={this.state.valueInput || ""} />
+                    <input readOnly={this.state.readOnly ? true : false} type={this.props.typeInput} placeholder={this.props.placeholder} id={this.props.id} className={"form-control "} onChange={e => this.changeValue(e)} value={this.state.valueInput || ""} />
                 </div>
             </div>
         )
