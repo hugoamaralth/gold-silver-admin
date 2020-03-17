@@ -4,7 +4,8 @@ import { saveCliente } from "../services/serverRequests";
 export default class NovoCliente extends Component {
     state = {
         clienteDetalhes: {},
-        hasError: true
+        hasError: true,
+        isPasswordTheSame: undefined
     }
     constructor(props) {
         super(props);
@@ -22,6 +23,7 @@ export default class NovoCliente extends Component {
             email: this.state.clienteDetalhes.email || '',
             phone: this.state.clienteDetalhes.telefone || '',
             password: this.state.clienteDetalhes.senha || '',
+            confirmPassword: this.state.clienteDetalhes.confirmarSenha || ''
         };
         let clienteValues = Object.values(clienteConfig);
         clienteValues.map(
@@ -29,20 +31,28 @@ export default class NovoCliente extends Component {
         )
         console.log(containError)
 
-        this.setState({
-            hasError: containError
-        })
-
         if (!containError) {
-            let save = await saveCliente(clienteConfig);
-            if (save.status === 200) {
-                setTimeout(function () {
-                    window.location = "/admin/clientes"
-                }, 1500)
+            let { clienteDetalhes } = this.state;
+            let confirmPassword = clienteDetalhes.senha === clienteDetalhes.confirmarSenha;
+            if (confirmPassword) {
+                this.setState({
+                    hasError: containError,
+                    isPasswordTheSame: true
+                });
+
+                let save = await saveCliente(clienteConfig);
+
+                if (save.status === 200) {
+                    setTimeout(function () {
+                        window.location = "/admin/clientes"
+                    }, 1500)
+                }
+            } else {
+                this.setState({
+                    isPasswordTheSame: false
+                })
             }
-        } else {
-            console.log("nao autorizado")
-        }
+        } 
 
 
     }
@@ -52,11 +62,9 @@ export default class NovoCliente extends Component {
         let ret = {};
         ret.nome = pars.key === "nome" ? pars.value : clienteDetalhes.nome;
         ret.sobrenome = pars.key === "sobrenome" ? pars.value : clienteDetalhes.sobrenome;
-        ret.nascimento = pars.key === "nascimento" ? pars.value : clienteDetalhes.nascimento;
-        ret.cpf = pars.key === "cpf" ? pars.value : clienteDetalhes.cpf;
         ret.email = pars.key === "email" ? pars.value : clienteDetalhes.email;
-        ret.genero = pars.key === "genero" ? pars.value : clienteDetalhes.genero;
         ret.senha = pars.key === "senha" ? pars.value : clienteDetalhes.senha;
+        ret.confirmarSenha = pars.key === "confirmarSenha" ? pars.value : clienteDetalhes.confirmarSenha;
         ret.telefone = pars.key === "telefone" ? pars.value : clienteDetalhes.telefone;
 
         this.setState({
@@ -78,26 +86,28 @@ export default class NovoCliente extends Component {
             Preencha todos os campos para continuar.
         </div>
 
-        
+        const checkPassword = <div className="alert alert-danger text-center">
+            As senhas não são a mesma.
+        </div>
+
         return (
             <div className="container-fluid ">
                 <form action="" className="my-5">
                     <div className="form-group">
                         <Input reff="nome" name="Nome" placeholder="Insira o nome do cliente" icon="id-card" typeInput="text" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.nome} />
                         <Input reff="sobrenome" name="Sobrenome" placeholder="Insira o sobrenome do cliente" icon="signature" typeInput="text" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.sobrenome} />
-                        <Input reff="nascimento" name="Data de Nascimento" placeholder="Insira a data de nascimento do cliente" icon="birthday-cake" typeInput="text" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.nascimento} />
-                        <Input reff="cpf" name="CPF" placeholder="Insira o cpf do cliente" icon="file-signature" typeInput="text" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.cpf} />
                         <Input reff="email" name="Email" placeholder="Insira o email do cliente" icon="envelope" typeInput="text" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.email} />
-                        <Input reff="genero" name="Gênero" placeholder="Insira o genero do cliente" icon="male" typeInput="text" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.genero} />
                         <Input reff="senha" name="Senha" placeholder="Insira a senha do cliente" icon="key" typeInput="password" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.senha} />
+                        <Input reff="confirmarSenha" name="Confirmar Senha" placeholder="Insira a senha do cliente" icon="key" typeInput="password" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.confirmarSenha} />
                         <Input reff="telefone" name="Telefone" placeholder="Insira o telefone do cliente" icon="phone" typeInput="text" onChange={this.handlerOnInputChange} valueInput={this.state.clienteDetalhes.telefone} />
                     </div>
 
                     {this.state.hasError ? alertError : alertSuccess}
+                    {this.state.isPasswordTheSame ? "" : checkPassword}
                     <div className="form-group">
 
                         <div className="form-group d-flex justify-content-between p-0">
-                            <div className="p-2 btn" onClick={()=> window.location = "/admin/clientes"}>
+                            <div className="p-2 btn" onClick={() => window.location = "/admin/clientes"}>
                                 <span className="btn  btn-warning h-100 w-100 btn-icon-split">
                                     <span className="icon text-white-50">
                                         <i className="fas fa-long-arrow-alt-left text-light"></i>

@@ -35,13 +35,6 @@ export default props =>
           <span>Clientes</span>
         </Link>
       </li>
-      <li className="nav-item">
-        <Link className="nav-link collapsed" to="/admin/compras" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i className="fas fa-bars"></i>
-          <span>Compras</span>
-        </Link>
-      </li>
-
       <div className="text-center d-none d-md-inline">
         <button className="rounded-circle border-0" id="sidebarToggle"></button>
       </div>

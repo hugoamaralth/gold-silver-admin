@@ -63,7 +63,7 @@ export default class ListaProdutos extends React.Component {
         return (
             <div className="container-fluid mt-3">
                 <div className="w-100 d-flex justify-content-end mb-2">
-                    <button id="btnNovoProduto" className="btn btn-outline-success" onClick={() => window.location="http://localhost:3000/admin/produtos/new"}>Crie um novo produto!</button>
+                    <button id="btnNovoProduto" className="btn btn-outline-success" onClick={() => window.location="/admin/produtos/new"}>Crie um novo produto!</button>
                 </div>
                 <div className="card shadow mb-4">
                     <div className="card-header py-3">
