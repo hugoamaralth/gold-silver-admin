@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import Input from "./Input"
-import { saveCliente } from "../services/serverRequests";
+import { saveCliente, checkEmailExists } from "../services/serverRequests";
 export default class NovoCliente extends Component {
     state = {
         clienteDetalhes: {},
         hasError: true,
-        isPasswordTheSame: undefined
+        isPasswordTheSame: undefined,
+        emailAlreadyExits: false
     }
     constructor(props) {
         super(props);
@@ -29,17 +30,22 @@ export default class NovoCliente extends Component {
         clienteValues.map(
             e => e === '' ? containError = true : console.log(e)
         )
-        console.log(containError)
 
         if (!containError) {
             let { clienteDetalhes } = this.state;
             let confirmPassword = clienteDetalhes.senha === clienteDetalhes.confirmarSenha;
+            const haveEmail = await checkEmailExists(this.state.clienteDetalhes.email);
+
             if (confirmPassword) {
+                console.log("senha certa")
                 this.setState({
-                    hasError: containError,
                     isPasswordTheSame: true
                 });
-
+                if (!haveEmail) {
+                    this.setState({
+                        hasError: containError,
+                        emailAlreadyExits: false
+                    })
                 let save = await saveCliente(clienteConfig);
 
                 if (save.status === 200) {
@@ -47,9 +53,23 @@ export default class NovoCliente extends Component {
                         window.location = "/admin/clientes"
                     }, 1500)
                 }
-            } else {
+                
+                }else {
+                    this.setState({
+                        hasError: true,
+                        emailAlreadyExits: true
+                    })
+                }
+
+             
+            } else if(!this.state.isPasswordTheSame){
+                console.log("senha errada")
                 this.setState({
                     isPasswordTheSame: false
+                })
+            } else {
+                this.setState({
+                    emailAlreadyExits: true
                 })
             }
         } 
@@ -82,8 +102,12 @@ export default class NovoCliente extends Component {
             Cliente salvo com sucesso.
         </div>
 
+        const alertEmailExits = <div className="alert alert-danger text-center">
+            O email já esta cadastrado.
+        </div>
+
         const alertError = <div className="alert alert-danger alertError text-center">
-            Preencha todos os campos para continuar.
+            {(this.state.hasError)? "Corrija o erro para salvar." : "preencha todos os campos."}
         </div>
 
         const checkPassword = <div className="alert alert-danger text-center">
@@ -103,6 +127,7 @@ export default class NovoCliente extends Component {
                     </div>
 
                     {this.state.hasError ? alertError : alertSuccess}
+                    {this.state.emailAlreadyExits ? alertEmailExits : ""}
                     {this.state.isPasswordTheSame ? "" : checkPassword}
                     <div className="form-group">
 

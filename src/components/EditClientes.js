@@ -1,7 +1,6 @@
 import React from "react";
 import Input from "./Input";
 import { clientePorId, deletarCliente } from "../services/serverRequests";
-import Axios from "axios";
 export default class EditClientes extends React.Component {
     id = this.props.match.params.id;
     state = {
