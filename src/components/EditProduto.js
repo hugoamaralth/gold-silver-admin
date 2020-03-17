@@ -74,7 +74,7 @@ export default class Edit extends React.Component {
                     isImagesLoaded: true,
                 });
                 detalhesResp.image.map(img => {
-                    this.images.push({
+                    return this.images.push({
                         name: img,
                         uploaded: true
                     })
