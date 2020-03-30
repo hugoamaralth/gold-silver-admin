@@ -1,12 +1,12 @@
 import React from "react";
 import { Switch, Route} from "react-router-dom";
-import ListaProdutos from "./components/ListaProdutos";
-import NovoProduto from "./components/NovoProduto";
-import EditProduto from "./components/EditProduto";
-import EditClientes from "./components/EditClientes";
-import ListaClientes from "./components/ListaCliente";
-import NovoCliente from "./components/NovoCliente";
-import Compras from "./components/Compras"
+import ListaProdutos from "./pages/ListaProdutos";
+import NovoProduto from "./pages/NovoProduto";
+import EditProduto from "./pages/EditProduto";
+import EditClientes from "./pages/EditClientes";
+import ListaClientes from "./pages/ListaCliente";
+import NovoCliente from "./pages/NovoCliente";
+import Compras from "./pages/Compras"
 
  
 export default props =>

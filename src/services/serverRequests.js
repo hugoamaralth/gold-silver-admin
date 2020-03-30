@@ -68,3 +68,8 @@ export async function deletarCliente(id){
     const ret = await axios.get(`${SERVER_URL}/api/client/delete.php?id=${id}`);
     return ret;
 }
+
+export async function listarCategorias(){
+    const ret = await axios.get(`${SERVER_URL}/api/product/categories.php`);
+    return ret;
+}
