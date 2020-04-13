@@ -6,7 +6,9 @@ import EditProduto from "./pages/EditProduto";
 import EditClientes from "./pages/EditClientes";
 import ListaClientes from "./pages/ListaCliente";
 import NovoCliente from "./pages/NovoCliente";
-import Compras from "./pages/Compras"
+import Compras from "./pages/Compras";
+import DetalhesCompras from "./pages/DetalhesCompras";
+
 
  
 export default props =>
@@ -17,6 +19,6 @@ export default props =>
        <Route path="/admin/clientes" exact component={ListaClientes}/>
        <Route path="/admin/clientes/edit/:id" component={EditClientes}/>
        <Route path="/admin/clientes/new" component={NovoCliente}/>
-       <Route path="/admin/compras" component={Compras}/>
-       
+       <Route path="/admin/compras" exact component={Compras}/>
+       <Route path="/admin/compras/edit/:id"  component={DetalhesCompras} />
    </Switch>

@@ -40,13 +40,13 @@ export default class Input extends Component {
 
     render() {
         return (
-            <div className="form-group has-error has-feedback px-2 h-100">
-                <label htmlFor={this.props.id} className="text-primary control-label">{this.props.name}</label>
-                <div className="input-group mb-2 mr-sm-2  ">
+            <div className="form-group has-error has-feedback h-100 ">
+                <label htmlFor={this.props.id} className={`text-primary control-label   ${this.props.inputLa}`} >{this.props.name}</label>
+                <div className={`input-group mb-2 mr-sm-2 ${this.props.inputClass}`} >
                     <div className="input-group-prepend">
                         <div className="input-group-text"> <i className={`fas fa-${this.props.icon} text-primary`}></i></div>
                     </div>
-                    <input readOnly={this.state.readOnly ? true : false} type={this.props.typeInput} placeholder={this.props.placeholder} id={this.props.id} className={"form-control "} onChange={e => this.changeValue(e)} value={this.state.valueInput || ""} />
+                    <input readOnly={this.state.readOnly ? true : false} type={this.props.typeInput} placeholder={this.props.placeholder} id={this.props.id} className="form-control" onChange={e => this.changeValue(e)} value={this.state.valueInput || ""} />
                 </div>
             </div>
         )
