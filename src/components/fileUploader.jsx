@@ -46,7 +46,7 @@ export default class FileUploader extends Component {
                 </div>
 
                 <div className="form-group">
-                    <input type="file" className="form-control" onChange={this.uploadMultipleFiles} multiple />
+                    <input type="file" className="file-path  btn btn-primary" onChange={this.uploadMultipleFiles} multiple />
                 </div>
                 {/* <button type="button" className="btn btn-danger btn-block" onClick={this.uploadFiles}>Upload</button> */}
             </form >

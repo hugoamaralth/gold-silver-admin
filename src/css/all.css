@@ -1,0 +1,38 @@
+*{margin:0; padding:0; box-sizing: border-box;}
+
+html,body, #root { 
+    width: 100%;
+    height: 100%;
+}
+
+.modal-new {
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-area{
+    background-color: black
+}
+
+.buttonAdd {   
+    /* z-index: ; */
+    cursor:pointer !important
+}
+
+input{
+    /* min-width: 80px; */
+}
+
+.loader{ 
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: black;
+    color: white;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}

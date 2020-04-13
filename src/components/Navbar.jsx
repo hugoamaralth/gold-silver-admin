@@ -11,12 +11,20 @@ export default props =>
       </Link>
 
       <hr className="sidebar-divider my-0" />
-{/* 
+      {/* 
       <li className="nav-item active">
         <Link className="nav-link" to="/admin">
           <i className="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></Link>
       </li> */}
+
+      <li className="nav-item">
+        <Link className="nav-link collapsed" to="/admin/compras" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i className="fas fa-bars"></i>
+          <span><b>Compras no site</b></span>
+        </Link>
+      </li>
+
 
       <hr className="sidebar-divider" />
 
@@ -27,7 +35,7 @@ export default props =>
           <span><b>Produtos</b></span>
         </Link>
       </li>
-      
+
 
       <li className="nav-item">
         <Link className="nav-link collapsed" to="/admin/clientes" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -35,6 +43,7 @@ export default props =>
           <span>Clientes</span>
         </Link>
       </li>
+
       <div className="text-center d-none d-md-inline">
         <button className="rounded-circle border-0" id="sidebarToggle"></button>
       </div>
