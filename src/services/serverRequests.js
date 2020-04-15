@@ -6,6 +6,11 @@ import { SERVER_URL } from './vars'
 //arrumei o metodo também, siga esse padrão para as demais chamadas;
 export async function listarProdutos() {
     const ret = await axios.get(`${SERVER_URL}/api/product/`);
+    ret.data.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+    })
     return ret.data;
 };
 
@@ -106,12 +111,12 @@ export async function createNewCategory(name) {
     return ret
 }
 
-export async function getCode(code){
+export async function getCode(code) {
     const ret = await axios.get(`${SERVER_URL}/api/payment/getCodeShipping.php?code=${code}`);
     return ret.data;
 }
 
-export async function saveDetail(code, scode){
+export async function saveDetail(code, scode) {
     const ret = await axios.get(`${SERVER_URL}/api/payment/setCodeShipping.php?code=${code}&scode=${scode}`);
     return ret.data;
 }

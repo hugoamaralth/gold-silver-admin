@@ -111,12 +111,10 @@ export default class Edit extends React.Component {
         produtoPorId(this.id).then(
             resp => {
                 detalhesResp = resp[0];
-                this.setState({ produtoDetalhes: detalhesResp })
+                //this.setState({ produtoDetalhes: detalhesResp })
                 this.setState({
                     ...this.state,
-                    produtoDetalhes: {
-                        ...this.state.produtoDetalhes
-                    },
+                    produtoDetalhes: detalhesResp,
                     isImagesLoaded: true,
                 });
                 detalhesResp.image.map(img => 

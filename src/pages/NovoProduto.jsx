@@ -127,7 +127,8 @@ export default class NovoProduto extends React.Component {
 
 
     async salvarProduto() {
-        console.log("produto clicado")
+        this.state.produtoDetalhes.category = this.state.produtoDetalhes.category || 1;
+        this.state.produtoDetalhes.brand = this.state.produtoDetalhes.brand || 1;
         let containError = false;
 
         if (this.state.formDataImages === null) {
