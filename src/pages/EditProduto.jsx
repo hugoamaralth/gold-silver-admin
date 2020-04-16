@@ -4,7 +4,7 @@ import { produtoPorId, updateProduct, uploadImages, deletarProduto, listarCatego
 import Input from "../components/Input";
 import Images from "../components/Images";
 import InputSelect from "../components/InputSelect";
-import {BtnBack, BtnDelete, BtnSave } from "../components/Button";
+import { BtnBack, BtnDelete, BtnSave } from "../components/Button";
 import Modal from "../components/Modal"
 // import fileUploader from "./fileUploader";
 
@@ -27,6 +27,7 @@ export default class Edit extends React.Component {
         isBrandLoaded: false,
         showModalAdd: false,
         isLoading: false,
+        images: []
 
     }
 
@@ -35,14 +36,14 @@ export default class Edit extends React.Component {
     constructor(props) {
         super(props);
         this.getData();
+        this.getBrand();
+        this.getCategory();
         this.addImages = this.addImages.bind(this);
         this.handlerOnInputChange = this.handlerOnInputChange.bind(this);
         this.removeImages = this.removeImages.bind(this);
         this.getBrand = this.getBrand.bind(this);
         this.getCategory = this.getCategory.bind(this);
         this.handlerOnInputSelectChange = this.handlerOnInputSelectChange.bind(this);
-        this.getBrand();
-        this.getCategory();
         this.handlerOnShowsModal = this.handlerOnShowsModal.bind(this)
         this.handlerOnIputModalChange = this.handlerOnIputModalChange.bind(this);
         this.handlerSaveModal = this.handlerSaveModal.bind(this);
@@ -82,7 +83,9 @@ export default class Edit extends React.Component {
     removeImages(e, imageIndice) {
         e.preventDefault()
         let { image } = this.state.produtoDetalhes;
+        // let image = this.image;
         image.splice(imageIndice, 1);
+        console.log(this.state.produtoDetalhes.image)
         this.setState({
             ...this.state,
             produtoDetalhes: {
@@ -105,24 +108,24 @@ export default class Edit extends React.Component {
     }
 
 
-    getData() {
+    async getData() {
 
         let detalhesResp = {};
-        produtoPorId(this.id).then(
+        await produtoPorId(this.id).then(
             resp => {
                 detalhesResp = resp[0];
-                //this.setState({ produtoDetalhes: detalhesResp })
                 this.setState({
                     ...this.state,
                     produtoDetalhes: detalhesResp,
                     isImagesLoaded: true,
                 });
-                detalhesResp.image.map(img => 
+                detalhesResp.image.map(img =>
                     this.images.push({
                         name: img,
                         uploaded: true
                     })
                 );
+                return "";
             }
         );
     };
@@ -133,6 +136,7 @@ export default class Edit extends React.Component {
     }
 
     async salvarProduto() {
+    
         let containsError = undefined;
 
         const produtosConfig = {
@@ -140,12 +144,17 @@ export default class Edit extends React.Component {
             price: this.state.produtoDetalhes.price,
             category: this.state.produtoDetalhes.category_id,
             brand: this.state.produtoDetalhes.brand_id,
-            description: this.state.produtoDetalhes.description
+            description: this.state.produtoDetalhes.description,
+            width: this.state.produtoDetalhes.width,
+            height: this.state.produtoDetalhes.height,
+            weight: this.state.produtoDetalhes.weight,
+            length: this.state.produtoDetalhes.length,
         };
 
+        console.log(this.images)
         let produtosAutenticar = Object.values(produtosConfig);
         produtosAutenticar.map(
-            e => e === "" ? containsError = true : ""
+            e => e === "" || this.state.produtoDetalhes.image.length === 0 ? containsError = true : ""
         );
 
 
@@ -173,17 +182,14 @@ export default class Edit extends React.Component {
                 ];
             }
             produtosConfig.image = JSON.stringify(arrayImages);
-            console.log(this.state.produtoDetalhes)
             let ret = await updateProduct(this.id, produtosConfig);
             if (ret.status === 200 && !this.state.hasError) {
-                let alertSuccess = document.querySelector('.alertSuccess');
-                alertSuccess.innerHTML = "Produto salvo com sucesso.";
-
                 setTimeout(function () {
                     window.location = "/admin/produtos";
                 }, 500)
             }
             console.log(ret)
+            
         }
     }
 
@@ -193,6 +199,10 @@ export default class Edit extends React.Component {
         ret.name = pars.key === "name" ? pars.value : produtoDetalhes.name;
         ret.price = pars.key === "price" ? pars.value : produtoDetalhes.price;
         ret.description = pars.key === "description" ? pars.value : produtoDetalhes.description;
+        ret.width = pars.key === "width" ? pars.value : produtoDetalhes.width;
+        ret.height = pars.key === "height" ? pars.value : produtoDetalhes.height;
+        ret.weight = pars.key === "weight" ? pars.value : produtoDetalhes.weight;
+        ret.length = pars.key === "length" ? pars.value : produtoDetalhes.length;
 
         this.setState({
             produtoDetalhes: {
@@ -258,15 +268,14 @@ export default class Edit extends React.Component {
     }
 
     async deleteProduct(id) {
-        let ret = await deletarProduto(id); 
-        console.log(ret);
+        let ret = await deletarProduto(id);
         if (ret.status === 200) {
             this.setState({
                 showDeleteMessage: true
             })
-            setTimeout(()=> 
+            setTimeout(() =>
                 window.location = "/admin/produtos"
-            ,1500)
+                , 1500)
         }
     }
 
@@ -291,7 +300,6 @@ export default class Edit extends React.Component {
 
 
     handlerOnIputModalChange(text) {
-        console.log(text.target.value)
         this.setState({
             ...this.state,
             modalContent: text.target.value
@@ -302,7 +310,7 @@ export default class Edit extends React.Component {
         if (this.state.modalReff === "brand") {
             const ret = await createNewBrand(this.state.modalContent);
             const retBrand = await this.getBrand();
-            console.log(ret);
+
             this.setState({
                 ...this.state,
                 isLoading: true
@@ -342,7 +350,7 @@ export default class Edit extends React.Component {
 
         let { hasError } = this.state;
         const alertSucess = <div className="alert alert-success text-center alertSuccess">
-            Sem erros, produto pronto para ser salvo.
+            Produto salvo com sucesso
         </div>;
 
         const alertError = <div className="alert alert-danger text-center">
@@ -370,6 +378,10 @@ export default class Edit extends React.Component {
                             <InputSelect inputName="Categoria" reff="category" isEdit={this.state.produtoDetalhes.category_id} options={this.state.categoryOptions} isOptionsLoaded={this.state.isCategoryLoaded} onChange={this.handlerOnInputSelectChange} iconArea="align-center" handlerOnAddClicked={this.handlerOnShowsModal} />
                             <InputSelect inputName="Marca" reff="brand" isEdit={this.state.produtoDetalhes.brand_id} options={this.state.brandOptions} isOptionsLoaded={this.state.isBrandLoaded} onChange={this.handlerOnInputSelectChange} iconArea="address-book" handlerOnAddClicked={this.handlerOnShowsModal} />
                             <Input reff="description" valueInput={this.state.produtoDetalhes.description} onChange={this.handlerOnInputChange} name="Descrição" icon="exclamation" typeInput="text" />
+                            <Input reff="width" valueInput={this.state.produtoDetalhes.width} onChange={this.handlerOnInputChange} name="Largura (cm)" icon="exclamation" typeInput="text" />
+                            <Input reff="height" valueInput={this.state.produtoDetalhes.height} onChange={this.handlerOnInputChange} name="Altura (cm)" icon="exclamation" typeInput="text" />
+                            <Input reff="weight" valueInput={this.state.produtoDetalhes.weight} onChange={this.handlerOnInputChange} name="Comprimento (cm)" icon="exclamation" typeInput="text" />
+                            <Input reff="length" valueInput={this.state.produtoDetalhes.length} onChange={this.handlerOnInputChange} name="Peso (gr)" icon="exclamation" typeInput="text" />
                         </div>
                         <div className="form-group ml-2">
 
@@ -389,11 +401,11 @@ export default class Edit extends React.Component {
                         {hasError ? alertError : alertSucess}
                         <div className="form-group d-flex justify-content-between p-0">
                             <BtnBack route="/admin/produtos/" />
-                            <BtnDelete deleteFn={this.deleteProduct} idToDelete={this.id}/>
+                            <BtnDelete deleteFn={this.deleteProduct} idToDelete={this.id} />
                             <BtnSave saveFn={this.salvarProduto} />
-                            
-                            
-                                {/* <div className=" p-2 btn " onClick={() => this.salvarProduto(this.id)}>
+
+
+                            {/* <div className=" p-2 btn " onClick={() => this.salvarProduto(this.id)}>
                                     <span className="btn btn-primary h-100 w-100 btn-icon-split">
                                         <span className="icon text-white-50">
                                             <i className="fas fa-check text-light"></i>
@@ -405,7 +417,7 @@ export default class Edit extends React.Component {
                     </form>
 
                 </div>
-                </div>
+            </div>
         )
     }
 }
