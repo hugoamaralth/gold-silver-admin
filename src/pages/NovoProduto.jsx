@@ -82,6 +82,7 @@ export default class NovoProduto extends React.Component {
     }
 
     handlerOnInputChange(pars) {
+        console.log(pars)
         let { produtoDetalhes } = this.state;
         let ret = {}
         ret.name = pars.key === "name" ? pars.value : produtoDetalhes.name;
@@ -89,6 +90,10 @@ export default class NovoProduto extends React.Component {
         // ret.category = pars.key === "category" ? pars.value : produtoDetalhes.category;
         // ret.brand = pars.key === "marca" ? pars.value : produtoDetalhes.brand;
         ret.description = pars.key === "description" ? pars.value : produtoDetalhes.description;
+        ret.width = pars.key === "width" ? pars.value : produtoDetalhes.width;
+        ret.height = pars.key === "height" ? pars.value : produtoDetalhes.height;
+        ret.weight = pars.key === "weight" ? pars.value : produtoDetalhes.weight;
+        ret.length = pars.key === "length" ? pars.value : produtoDetalhes.length;
 
         this.setState({
             ...this.state,
@@ -144,6 +149,10 @@ export default class NovoProduto extends React.Component {
                 category: this.state.produtoDetalhes.category || "",
                 brand: this.state.produtoDetalhes.brand || "",
                 description: this.state.produtoDetalhes.description || "",
+                width: this.state.produtoDetalhes.width || "",
+                height: this.state.produtoDetalhes.height || "",
+                weight: this.state.produtoDetalhes.weight || "",
+                length: this.state.produtoDetalhes.length || "",
                 image: JSON.stringify(upImages.data)
             }
 
@@ -267,8 +276,11 @@ export default class NovoProduto extends React.Component {
                     <Input reff="price" name="Preço" placeholder="Insira o preço" icon="dollar-sign" onChange={this.handlerOnInputChange} valueInput={this.state.produtoDetalhes.price} typeInput="number" />
                     <InputSelect options={this.state.categoryOptions} inputName="Categorias" iconArea="align-center" onChange={this.handlerOnInputSelectChange} reff="category" isOptionsLoaded={this.state.isCategoryLoaded} handlerOnAddClicked={this.handlerOnShowsModal} />
                     <InputSelect options={this.state.brandOptions} inputName="Marcas" iconArea="align-center" onChange={this.handlerOnInputSelectChange} reff="brand" isOptionsLoaded={this.state.isBrandLoaded} handlerOnAddClicked={this.handlerOnShowsModal} />
-
                     <Input reff="description" name="Descrição" placeholder="Insira a descrição" icon="exclamation" onChange={this.handlerOnInputChange} valueInput={this.state.produtoDetalhes.description} typeInput="text" />
+                    <Input reff="width" name="Largura (cm)" placeholder="Insira a descrição" icon="exclamation" onChange={this.handlerOnInputChange} valueInput={this.state.produtoDetalhes.width} typeInput="number" />
+                    <Input reff="height" name="Altura (cm)" placeholder="Insira a descrição" icon="exclamation" onChange={this.handlerOnInputChange} valueInput={this.state.produtoDetalhes.height} typeInput="number" />
+                    <Input reff="length" name="Comprimento (cm)" placeholder="Insira a descrição" icon="exclamation" onChange={this.handlerOnInputChange} valueInput={this.state.produtoDetalhes.length} typeInput="number" />
+                    <Input reff="weight" name="Peso (gr)" placeholder="Insira a descrição" icon="exclamation" onChange={this.handlerOnInputChange} valueInput={this.state.produtoDetalhes.weight} typeInput="number" />
                 </div>
 
                 <div className="form-group ml-4">
